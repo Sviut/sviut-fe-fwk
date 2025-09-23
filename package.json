@@ -1,7 +1,7 @@
 {
   "name": "fe-fwk-book",
   "version": "1.0.0",
-  "private": true,
+  "private": false,
   "description": "Code for the book 'Build a frontend framework from scratch'.",
   "workspaces": [
     "packages/compiler",
@@ -11,11 +11,7 @@
   "scripts": {
     "serve:examples": "npx http-server . -o ./examples/ -bg"
   },
-  "keywords": [
-    "js",
-    "javascript",
-    "frontend",
-    "framework"
-  ],
-  "license": "MIT"
+  "devDependencies": {
+    "eslint": "^9.36.0"
+  }
 }
