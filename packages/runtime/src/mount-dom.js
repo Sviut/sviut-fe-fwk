@@ -1,4 +1,5 @@
 import {DOM_TYPES} from "./h";
+import {setAttribute} from "jsdom/lib/jsdom/living/attributes";
 
 
 export function mountDom(vDom, parentEl) {
@@ -33,7 +34,21 @@ function createTextNode(vDom, parentEl) {
 }
 
 function createElementNode(vDom, parentEl) {
-// TODO
+    const {tag, props, children} = vDom
+
+    const element = document.createElement(tag)
+    addProps(element, props, vDom)
+    vDom.el = element
+
+    children.forEach(child => mountDom(child, element))
+    parentEl.append(element)
+}
+
+function addProps(element, props, vDom) {
+    const {on: events, ...attrs} = props
+
+    vDom.listeners = addEventListener(events, element)
+    setAttribute(element, attrs)
 }
 
 function createFragmentNodes(vDom, parentEl) {
