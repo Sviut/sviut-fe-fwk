@@ -1,4 +1,4 @@
-import {createApp, h, hFragment} from 'https://unpkg.com/sviut-fe-fwk@latest'
+import {createApp, h, hFragment} from 'https://unpkg.com/sviut-fe-fwk@1'
 
 const state = {
     currentTodo: '',
