@@ -1,5 +1,5 @@
 import {DOM_TYPES} from "./h";
-import {setAttribute} from "./attributes";
+import {setAttributes} from "./attributes";
 import {addEventListeners} from "./events";
 
 
@@ -45,11 +45,10 @@ function createElementNode(vDom, parentEl) {
     parentEl.append(element)
 }
 
-function addProps(element, props, vDom) {
+function addProps(el, props, vdom) {
     const {on: events, ...attrs} = props
-
-    vDom.listeners = addEventListeners(events, element)
-    setAttribute(element, attrs)
+    vdom.listeners = addEventListeners(events, el)
+    setAttributes(el, attrs)
 }
 
 function createFragmentNodes(vdom, parentEl) {

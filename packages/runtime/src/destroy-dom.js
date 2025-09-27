@@ -36,15 +36,12 @@ function removeTextNode(vdom) {
 
 function removeElementNode(vdom) {
     const {el, children, listeners} = vdom
-
-    el.remove()
-
     children.forEach(destroyDom)
-
     if (listeners) {
         removeEventListeners(listeners, el)
-        delete el.listeners
+        delete vdom.listeners
     }
+    el.remove()
 }
 
 function removeFragmentNode(vdom) {

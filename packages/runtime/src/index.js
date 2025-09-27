@@ -1,2 +1,2 @@
 export {createApp} from './app'
-export {h, hFragment, hString} from './h'
+export {h, hFragment, hString, DOM_TYPES} from './h'

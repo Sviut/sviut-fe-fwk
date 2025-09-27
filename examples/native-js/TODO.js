@@ -1,14 +1,4 @@
-import {createApp, h, hFragment} from 'https://unpkg.com/sviut-fe-fwk@1'
-
-
-function App(state, emit) {
-    return hFragment([
-        h('h1', {}, ['My TODOs']),
-        CreateTodo(state, emit),
-        TodoList(state, emit),
-    ])
-}
-
+import {createApp, h, hFragment} from 'https://unpkg.com/sviut-fe-fwk@latest'
 
 const state = {
     currentTodo: '',
@@ -17,18 +7,19 @@ const state = {
         original: null,
         edited: null,
     },
-    todos: ['Walk the dog', 'Water the plants'],
+    todos: ['Walk the dog', 'Water the plants', 'Sand the chairs'],
 }
 
 const reducers = {
     'update-current-todo': (state, currentTodo) => ({
         ...state,
-        currentTodo
+        currentTodo,
     }),
 
     'add-todo': (state) => ({
         ...state,
-        currentTodo: ''
+        currentTodo: '',
+        todos: [...state.todos, state.currentTodo],
     }),
 
     'start-editing-todo': (state, idx) => ({
@@ -42,10 +33,7 @@ const reducers = {
 
     'edit-todo': (state, edited) => ({
         ...state,
-        edit: {
-            ...state.edit,
-            edited
-        }
+        edit: {...state.edit, edited},
     }),
 
     'save-edited-todo': (state) => {
@@ -70,6 +58,13 @@ const reducers = {
     }),
 }
 
+function App(state, emit) {
+    return hFragment([
+        h('h1', {}, ['My TODOs']),
+        CreateTodo(state, emit),
+        TodoList(state, emit),
+    ])
+}
 
 function CreateTodo({currentTodo}, emit) {
     return h('div', {}, [
@@ -79,8 +74,7 @@ function CreateTodo({currentTodo}, emit) {
             id: 'todo-input',
             value: currentTodo,
             on: {
-                input: ({target}) =>
-                    emit('update-current-todo', target.value),
+                input: ({target}) => emit('update-current-todo', target.value),
                 keydown: ({key}) => {
                     if (key === 'Enter' && currentTodo.length >= 3) {
                         emit('add-todo')
@@ -107,7 +101,6 @@ function TodoList({todos, edit}, emit) {
     )
 }
 
-
 function TodoItem({todo, i, edit}, emit) {
     const isEditing = edit.idx === i
 
@@ -115,48 +108,24 @@ function TodoItem({todo, i, edit}, emit) {
         ? h('li', {}, [
             h('input', {
                 value: edit.edited,
-                on: {
-                    input: ({target}) => emit('edit-todo', target.value)
-                },
+                on: {input: ({target}) => emit('edit-todo', target.value)},
             }),
-            h(
-                'button',
-                {
-                    on: {
-                        click: () => emit('save-edited-todo')
-                    }
-                },
-                ['Save']
-            ),
-            h(
-                'button',
-                {
-                    on: {
-                        click: () => emit('cancel-editing-todo')
-                    }
-                },
-                ['Cancel']
-            ),
+            h('button', {on: {click: () => emit('save-edited-todo')}}, [
+                'Save',
+            ]),
+            h('button', {on: {click: () => emit('cancel-editing-todo')}}, [
+                'Cancel',
+            ]),
         ])
         : h('li', {}, [
             h(
                 'span',
-                {
-                    on: {
-                        dblclick: () => emit('start-editing-todo', i)
-                    }
-                },
+                {on: {dblclick: () => emit('start-editing-todo', i)}},
                 [todo]
             ),
-            h(
-                'button',
-                {
-                    on: {
-                        click: () => emit('remove-todo', i)
-                    }
-                },
-                ['Done']
-            ),
+            h('button', {on: {click: () => emit('remove-todo', i)}}, [
+                'Done',
+            ]),
         ])
 }
 
