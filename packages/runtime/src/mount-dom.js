@@ -51,6 +51,9 @@ function addProps(element, props, vDom) {
     setAttribute(element, attrs)
 }
 
-function createFragmentNodes(vDom, parentEl) {
-// TODO
+function createFragmentNodes(vdom, parentEl) {
+    const {children} = vdom
+    vdom.el = parentEl
+
+    children.forEach((child) => mountDom(child, parentEl))
 }
