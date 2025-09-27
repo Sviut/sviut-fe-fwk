@@ -1,5 +1,5 @@
 import {DOM_TYPES} from "./h";
-import {setAttribute} from "jsdom/lib/jsdom/living/attributes";
+import {setAttribute} from "./attributes";
 
 
 export function mountDom(vDom, parentEl) {
