@@ -1,6 +1,7 @@
 import {destroyDom} from './destroy-dom'
 import {Dispatcher} from './dispatcher'
 import {mountDom} from './mount-dom'
+import {pathDOM} from './path-dom'
 
 export function createApp({state, view, reducers = {}}) {
     let parentEl = null
@@ -23,18 +24,15 @@ export function createApp({state, view, reducers = {}}) {
     }
 
     function renderApp() {
-        if (vdom) {
-            destroyDom(vdom)
-        }
-
-        vdom = view(state, emit)
-        mountDom(vdom, parentEl)
+        const newVdom = view(state, emit)
+        vdom = pathDOM(vdom, newVdom, parentEl)
     }
 
     return {
         mount(_parentEl) {
             parentEl = _parentEl
-            renderApp()
+            vdom = view(state, emit)
+            mountDom(vdom, parentEl)
             return this
         },
 
@@ -43,7 +41,7 @@ export function createApp({state, view, reducers = {}}) {
             vdom = null
             subscriptions.forEach(unsub => unsub())
         },
-        
+
         emit(eventName, payload) {
             emit(eventName, payload)
         },
